@@ -16,9 +16,7 @@ def ft_load(path: str) -> np.ndarray:
             raise AssertionError("File should be a jpg or jpeg")
         img = Image.open(path)
         img_array = np.array(img)
-        print(f"The shape of image is: \
-({img.size[1]}, {img.size[0]}, {img.layers})")
-        # print(img_array)
+        print(f"The shape of image is: {img_array.shape}")
         return img_array
     except AssertionError as e:
         print("AssersionError:", e)

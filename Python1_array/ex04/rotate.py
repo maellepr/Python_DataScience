@@ -6,6 +6,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def display(array: np.array):
+    """
+    Display the image.
+    """
+    plt.imshow(array, cmap='gray')
+    plt.show()
+
+
 def zoom(img: NDArray[np.uint8]):
     """
     Takes an image as input and returns a zoomed version of it,
@@ -34,21 +42,22 @@ def zoom(img: NDArray[np.uint8]):
     )
 
 
-def rotate(img: NDArray[np.uint8], axes: tuple[int, ...]):
-    # return np.asarray(
-    #     img[100:500, 450:850][..., :3].dot(
-    #         (0.2989, 0.5870, 0.1140)
-    #     )[..., np.newaxis],
-    #     dtype=np.uint8
-    # )
-    data = np.asarray(img)
-    shape = img.shape
-    rotated_shape = tuple(shape[i] for i in axes)
-    img_rotated = np.zeros(rotated_shape, dtype=data.dtype)
-    for index in np.ndindex(shape):
-        index_rotated = tuple(index[i] for i in axes)
-        img_rotated[index_rotated] = data[index]
-    return img_rotated
+def rotate(img: NDArray[np.uint8]):
+    """
+    Takes an image as input and returns a rotated version of it.
+    It takes the width and height of the image and creates a new
+    array with the dimensions swapped. The new array is then filled
+    with the values of the original array, but with the x and y
+    coordinates swapped.
+    """
+    image_array = np.asarray(img)
+    height, width = image_array.shape[:2]
+    transposed_array = np.zeros((width, height, 3), dtype=image_array.dtype)
+
+    for i in range(width):
+        for j in range(height):
+            transposed_array[i, j] = image_array[j, i]
+    return transposed_array
 
 
 def main():
@@ -64,20 +73,16 @@ def main():
         if img is None:
             raise AssertionError("Error in loading image.")
         img_array = ft_load(path)
-       
-
+        # img_zoomed = img_array
         img_zoomed = zoom(img_array)
         print(f"The shape of image is: {img_zoomed.shape}")
         print(img_zoomed)
 
-        img_rotated = rotate(img_zoomed, (1, 0, 2)).squeeze(axis=2)
+        transposed_array = rotate(img_zoomed)
 
-        print(f"New shape after slicing: {img_rotated.shape}")
-
-        print(img_rotated)
-
-        plt.imshow(img_rotated, cmap='gray')
-        plt.show()
+        print(f"New shape after Transpose: {transposed_array.shape}")
+        print(transposed_array)
+        display(transposed_array)
 
     except AssertionError as e:
         print("AssersionError:", e)

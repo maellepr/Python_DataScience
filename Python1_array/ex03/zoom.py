@@ -6,6 +6,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def display(array: np.array):
+    """
+    Display the image.
+    """
+    plt.imshow(array, cmap='gray')
+    plt.show()
+
+
 def zoom(img: NDArray[np.uint8]):
     """
     Takes an image as input and returns a zoomed version of it,
@@ -48,14 +56,11 @@ def main():
             raise AssertionError("Error in loading image.")
         img_array = ft_load(path)
         print(img_array)
-
         img_zoomed = zoom(img_array)
 
         print(f"New shape after slicing: {img_zoomed.shape}")
         print(img_zoomed)
-
-        plt.imshow(img_zoomed, cmap='gray')
-        plt.show()
+        display(img_zoomed)
 
     except AssertionError as e:
         print("AssersionError:", e)
